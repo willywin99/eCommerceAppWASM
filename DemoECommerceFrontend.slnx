@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BlazorWasm/BlazorWasm.csproj" Id="f44653f2-0a1f-4731-8150-6e23e9bfd8cd" />
+  <Project Path="ClientLibrary/ClientLibrary.csproj" Id="d077576c-e9f5-453a-8a18-7ff03831613d" />
+</Solution>
