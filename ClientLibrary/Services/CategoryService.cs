@@ -67,16 +67,17 @@ namespace ClientLibrary.Services
             var client = httpClient.GetPublicClient();
             var apiCall = new ApiCall
             {
-                Route = Constant.Category.Get,
+                Route = Constant.Category.GetAll,
                 Type = Constant.ApiCallType.Get,
                 Client = client,
                 Model = null!,
                 Id = null!
             };
             var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
-
-            return result == null ? [] :
-                await apiHelper.GetServiceResponse<IEnumerable<GetCategory>>(result);
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<IEnumerable<GetCategory>>(result);
+            else
+                return [];
         }
 
         //public
@@ -91,10 +92,13 @@ namespace ClientLibrary.Services
                 Model = null!
             };
             apiCall.ToString(id);
+            
             var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
-
-            return result == null ? null! :
-                await apiHelper.GetServiceResponse<GetCategory>(result);
+            
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<GetCategory>(result);
+            else
+                return null!;
         }
 
         //public
@@ -103,16 +107,19 @@ namespace ClientLibrary.Services
             var client = httpClient.GetPublicClient();
             var apiCall = new ApiCall
             {
-                Route = Constant.Category.Get,
+                Route = Constant.Category.GetProductsByCategory,
                 Type = Constant.ApiCallType.Get,
                 Client = client,
                 Model = null!,
             };
             apiCall.ToString(categoryId);
+
             var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
 
-            return result == null ? [] :
-                await apiHelper.GetServiceResponse<IEnumerable<GetProduct>>(result);
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<IEnumerable<GetProduct>>(result);
+            else
+                return [];
         }
     }
 }

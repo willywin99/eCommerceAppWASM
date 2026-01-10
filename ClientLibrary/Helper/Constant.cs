@@ -18,6 +18,7 @@
             public const string Add = "category/add";
             public const string Update = "category/update";
             public const string Delete = "category/delete";
+            public const string GetProductsByCategory = "category/products-by-category";
         }
 
         public static class Authentication
@@ -46,6 +47,18 @@
         public static class ApiClient
         {
             public const string Name = "Blazor-Client";
+        }
+
+        public static class Payment
+        {
+            public const string GetAll = "payment/methods";
+        }
+
+        public static class Cart
+        {
+            public const string Checkout = "cart/checkout";
+            public const string SaveCart = "cart/save-checkout";
+            public const string Name = "my-cart";
         }
     }
 }

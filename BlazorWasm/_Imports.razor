@@ -23,3 +23,18 @@
 @using ClientLibrary.Models.Authentication
 
 @using NetcodeHub.Packages.Components.Validations.OnInput
+
+@using Blazored.Typeahead
+@using System.Security.Claims
+@using ClientLibrary.Models.Product
+@using ClientLibrary.Models.Category
+@using NetcodeHub.Packages.WebAssembly.Storage.Cookie
+@using System.Text.Json
+@using NetcodeHub.Packages.Components.Toast
+@using NetcodeHub.Packages.Components.DataGrid
+@using NetcodeHub.Packages.Components.Modal
+@using ClientLibrary.Models.Cart
+
+@inject IBrowserCookieStorageService browserCookieStorageService
+@inject IPaymentMethodService paymentService
+@inject ICartService cartService
