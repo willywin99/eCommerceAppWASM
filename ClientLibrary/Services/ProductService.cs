@@ -47,16 +47,17 @@ namespace ClientLibrary.Services
             var client = httpClient.GetPublicClient();
             var apiCall = new ApiCall
             {
-                Route = Constant.Product.Get,
+                Route = Constant.Product.GetAll,
                 Type = Constant.ApiCallType.Get,
                 Client = client,
                 Model = null!,
                 Id = null!
             };
             var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
-
-            return result == null ? [] :
-                await apiHelper.GetServiceResponse<IEnumerable<GetProduct>>(result);
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<IEnumerable<GetProduct>>(result);
+            else
+                return [];
         }
 
         public async Task<GetProduct> GetByIdAsync(Guid id)
@@ -70,10 +71,13 @@ namespace ClientLibrary.Services
                 Model = null!
             };
             apiCall.ToString(id);
+
             var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
 
-            return result == null ? null! :
-                await apiHelper.GetServiceResponse<GetProduct>(result);
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<GetProduct>(result);
+            else
+                return null!;
         }
 
         public async Task<ServiceResponse> UpdateAsync(UpdateProduct product)

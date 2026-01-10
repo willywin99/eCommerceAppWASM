@@ -11,16 +11,22 @@ namespace BlazorWasm.Authentication
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            string jwt = await tokenService.GetJWTTokenAsync(Constant.Cookie.Name);
-            if (string.IsNullOrEmpty(jwt)) 
-                return await Task.FromResult(new AuthenticationState(_anonymous));
+            try
+            {
+                string jwt = await tokenService.GetJWTTokenAsync(Constant.Cookie.Name);
+                if (string.IsNullOrEmpty(jwt)) 
+                    return await Task.FromResult(new AuthenticationState(_anonymous));
 
-            var claims = GetClaims(jwt);
-            if (!claims.Any())
-                return await Task.FromResult(new AuthenticationState(_anonymous));
+                var claims = GetClaims(jwt);
+                if (!claims.Any())
+                    return await Task.FromResult(new AuthenticationState(_anonymous));
 
-            var claimPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
-            return await Task.FromResult(new AuthenticationState(claimPrincipal));
+                var claimPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwtAuth"));
+                return await Task.FromResult(new AuthenticationState(claimPrincipal));
+            } catch
+            {
+                return await Task.FromResult(new AuthenticationState(_anonymous));
+            }
         }
 
         public void NotifyAuthenticationState()
