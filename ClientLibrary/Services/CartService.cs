@@ -28,6 +28,24 @@ namespace ClientLibrary.Services
                 return await apiHelper.GetServiceResponse<ServiceResponse>(result);
         }
 
+        public async Task<IEnumerable<GetAchieve>> GetAchieves()
+        {
+            var client = await httpClient.GetPrivateClientAsync();
+            var apiCall = new ApiCall
+            {
+                Route = Constant.Cart.GetAchieves,
+                Type = Constant.ApiCallType.Get,
+                Client = client,
+                Model = null!,
+                Id = null!,
+            };
+            var result = await apiHelper.ApiCallTyeCall<Dummy>(apiCall);
+            if (result.IsSuccessStatusCode)
+                return await apiHelper.GetServiceResponse<IEnumerable<GetAchieve>>(result);
+            else
+                return [];
+        }
+
         public async Task<ServiceResponse> SaveCheckoutHistory(IEnumerable<CreateAchieve> achieves)
         {
             var privateClient = await httpClient.GetPrivateClientAsync();
@@ -39,7 +57,7 @@ namespace ClientLibrary.Services
                 Id = null!,
                 Model = achieves,
             };
-            var result = await apiHelper.ApiCallTyeCall<IEnumerable<Checkout>>(apiCallModel);
+            var result = await apiHelper.ApiCallTyeCall<IEnumerable<CreateAchieve>>(apiCallModel);
 
             if (result == null)
                 return apiHelper.ConnectionError();
