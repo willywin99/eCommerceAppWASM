@@ -1,4 +1,6 @@
-﻿<div class="fashion_section container-fluid">
+﻿@implements IAsyncDisposable
+
+<div class="fashion_section container-fluid">
     <div id="main_slider" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             @if(Products.Any())
@@ -18,9 +20,9 @@
                                                 <h4 class="shirt_text">@product.Name</h4>
                                                 <span id="newTag" class="badge badge-pill badge-success fs-2">New</span>
                                                 <p class="price_text">Price <span style="color: #262626">$ @product.Price</span></p>
-                                                <div class="tshirt_img"><img src="@product.Base64Image" /></div>
+                                                <div class="tshirt_img"><img src="@product.Image" /></div>
                                                 <div class="btn_main">
-                                                    <div class="buy_bt">
+                                                    <div class="buy_bt text-danger" @onclick="()=>AddItemToCart(product.Id)">
                                                         <a href="#">
                                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                                             Add To Cart
@@ -50,11 +52,19 @@
         }
     </div>
 </div>
-
+<NetcodeHubToast
+    @ref="ToastComponent"
+    Position="@ToastPosition.Bottom()"
+    IconClass="fa fa-check"
+    Persist="true"
+    Duration="4000"
+    />
 
 @code {
+    NetcodeHubToast? ToastComponent;
     IEnumerable<GetProduct> Products = [];
     List<List<GetProduct>> ProductGroups = [];
+    List<ProcessCart> MyCarts = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,11 +73,39 @@
         if(Products.Count() > 0)
         {
             // Group products into sublists of 4
-            ProductGroups = Products.Where(x => x.CreatedDate.AddDays(7) >= DateTime.Now)
+            // ProductGroups = Products.Where(x => x.CreatedDate.AddDays(7) >= DateTime.Now)
+            ProductGroups = Products.Where(x => x.CreatedDate.AddDays(7) <= DateTime.Now)
             .Select((product, index) => new { product, index })
             .GroupBy(x => x.index / 4)
             .Select(group => group.Select(x => x.product).ToList())
             .ToList();
         }
+    }
+
+    async Task AddItemToCart(Guid productId)
+    {
+        var getCart = MyCarts.FirstOrDefault(x => x.ProductId == productId);
+        if (getCart == null)
+        {
+            MyCarts.Add(new ProcessCart
+                {
+                    ProductId = productId,
+                    Quantity = 1,
+                });
+            await ToastComponent!.ShowSuccessToast("Cart", "Product added to cart!");
+        }
+        else
+            await ToastComponent!.ShowInfoToast("Cart", "Product already added to cart!");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (MyCarts.Any())
+            await browserCookieStorageService
+            .SetAsync(
+            Constant.Cart.Name,
+            JsonSerializer.Serialize(MyCarts),
+            30,
+            "/");
     }
 }

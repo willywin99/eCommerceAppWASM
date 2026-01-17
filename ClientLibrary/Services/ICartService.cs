@@ -7,5 +7,6 @@ namespace ClientLibrary.Services
     {
         Task<ServiceResponse> Checkout(Checkout checkout);
         Task<ServiceResponse> SaveCheckoutHistory(IEnumerable<CreateAchieve> achieves);
+        Task<IEnumerable<GetAchieve>> GetAchieves();
     }
 }

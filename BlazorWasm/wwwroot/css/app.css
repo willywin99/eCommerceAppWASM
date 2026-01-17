@@ -118,3 +118,18 @@ code {
     right: 0;
     top: 0;
 }
+
+.buy_bt {
+    cursor: pointer;
+}
+
+.modalDialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+}

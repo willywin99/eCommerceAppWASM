@@ -12,10 +12,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.11" PrivateAssets="all" />
     <PackageReference Include="NetcodeHub.Packages.Components.DataGrid" Version="1.0.1" />
+    <PackageReference Include="NetcodeHub.Packages.Components.FileUpload" Version="1.0.8" />
     <PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.2" />
     <PackageReference Include="NetcodeHub.Packages.Components.Toast" Version="1.0.5" />
     <PackageReference Include="NetcodeHub.Packages.Components.Validations" Version="1.0.1" />
-    <PackageReference Include="NetcodeHub.Packages.WebAssembly.Storage.Cookie" Version="9.0.1" />
+    <PackageReference Include="NetcodeHub.Packages.WebAssembly.Storage.Cookie" Version="9.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
   </ItemGroup>
 
